@@ -3,64 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmlkshk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sisidra <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/29 10:15:00 by tmlkshk           #+#    #+#             */
-/*   Updated: 2019/09/29 10:45:19 by tmlkshk          ###   ########.fr       */
+/*   Created: 2019/09/26 15:29:21 by sisidra           #+#    #+#             */
+/*   Updated: 2019/09/30 16:39:46 by sisidra          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-static	char	*ft_itoa_op(void)
+static int		ft_get_int_len(long long int nb)
 {
-	char *string;
+	int n;
 
-	if ((string = (char*)malloc(1 * sizeof(char) + 1)) == NULL)
-		return (NULL);
-	string[0] = '0';
-	string[1] = '\0';
-	return (string);
-}
-
-static	int		ft_itoa_num(long n)
-{
-	long	i;
-
-	i = 0;
-	if (n < 0)
-		i++;
-	while (n)
+	n = 0;
+	if (nb == 0)
+		return (1);
+	if (nb == -2147483648)
+		return (11);
+	if (nb < 0)
 	{
-		n /= 10;
-		i++;
+		nb *= -1;
+		n++;
 	}
-	return (i);
+	while (nb > 0)
+	{
+		nb = nb / 10;
+		++n;
+	}
+	return (n);
 }
 
 char			*ft_itoa(int n)
 {
-	int		i;
-	char	*string;
-	long	super;
+	char			*s;
+	int				len;
+	long long int	nb;
 
-	if (n == 0)
-		return (ft_itoa_op());
-	super = n;
-	i = ft_itoa_num(super);
-	if ((string = (char*)malloc(i * sizeof(char) + 1)) == NULL)
+	nb = n;
+	len = ft_get_int_len(nb);
+	if (!(s = (char*)malloc(sizeof(char) * (len + 1))))
 		return (NULL);
-	if (super < 0)
+	s[len--] = '\0';
+	if (nb < 0)
 	{
-		string[0] = '-';
-		super = -super;
+		nb *= -1;
+		s[0] = '-';
 	}
-	string[i--] = '\0';
-	while (super)
+	if (nb == 0)
+		return (ft_strdup("0"));
+	while (nb > 0)
 	{
-		string[i] = super % 10 + 48;
-		i--;
-		super /= 10;
+		s[len] = (nb % 10) + 48;
+		nb /= 10;
+		len--;
 	}
-	return (string);
+	return (s);
 }
