@@ -1,4 +1,4 @@
-Fractal discoverer programm.\n
+<br>Fractal discoverer programm.<\br>
 Install with make
 Run with ./fractol *fractal name*
 Supported fractals: mandelbrot, julia, newthon
